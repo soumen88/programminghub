@@ -59,6 +59,11 @@ dependencies:
   #Provider state management
   provider: ^6.0.5
 
+  #Using asset database in app
+  sqflite: ^2.0.2+1
+  path_provider: ^2.1.0
+  sqflite_common_ffi: ^2.3.0+2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

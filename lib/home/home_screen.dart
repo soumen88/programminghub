@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:programminghub/bmicalc/bmi_calculator_screen.dart';
 import 'package:programminghub/pageviews/page_view_demonstration_screen.dart';
 import 'package:programminghub/todo/add_task_screen.dart';
+import 'package:programminghub/todo/display_tasks_screen.dart';
 
 import '../camerademo/camera_screen.dart';
 import '../timer/timer_screen.dart';
@@ -42,7 +43,7 @@ class HomeScreen extends StatelessWidget{
             ),
             ElevatedButton(
                 onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => AddTaskScreen()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => DisplayTasksScreen()));
                 },
                 child: Text("Start TO DO")
             )

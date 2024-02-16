@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:programminghub/todo/tasks_model.dart';
+import 'package:programminghub/todo/tasks_notifier.dart';
+import 'package:provider/provider.dart';
 
 class AddTaskScreen extends StatelessWidget{
   GlobalKey<FormState> _formKey = GlobalKey();
   TextEditingController taskController = TextEditingController();
+  TasksModel? oldTaskModel;
+  bool isTaskBeingModified;
+
+
+  AddTaskScreen({this.oldTaskModel, this.isTaskBeingModified = false});
 
   @override
   Widget build(BuildContext context) {
+    if(isTaskBeingModified){
+      taskController.text = oldTaskModel!.taskDesc;
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Tasks Screen"),
@@ -16,16 +27,31 @@ class AddTaskScreen extends StatelessWidget{
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Add Some Tasks',
-                style: TextStyle(
-                  fontSize: 26
-                ),
+              Builder(
+                  builder: (BuildContext context){
+                      if(isTaskBeingModified){
+                        return Text('What do you want to do instead of ${oldTaskModel!.taskDesc}',
+                          style: TextStyle(
+                              fontSize: 26
+                          ),
+                        );
+                      }
+                      else{
+                        return Text('Add Some Tasks',
+                          style: TextStyle(
+                              fontSize: 26
+                          ),
+                        );
+
+                      }
+                  }
               ),
               SizedBox(height: 30,),
 
               Form(
                 key: _formKey,
                 child: TextFormField(
+                  controller: taskController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderSide: BorderSide(
@@ -72,11 +98,17 @@ class AddTaskScreen extends StatelessWidget{
               FilledButton.icon(
                   onPressed: (){
                     if(_formKey.currentState != null && _formKey.currentState!.validate()){
-
+                      if(isTaskBeingModified && oldTaskModel != null){
+                        Provider.of<TasksNotifier>(context, listen: false).modifyTaskInList(oldTaskModel!, taskController.text);
+                      }
+                      else{
+                        Provider.of<TasksNotifier>(context, listen: false).addTaskToList(taskController.text);
+                      }
+                      Navigator.pop(context);
                     }
                   },
                   icon: Icon(Icons.add),
-                  label: Text("Add Task")
+                  label: isTaskBeingModified ? Text("Modify Task") : Text("Add Task")
               )
             ],
           )
