@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:programminghub/base/logger_utils.dart';
 import 'package:video_player/video_player.dart';
 
 class DisplayCameraVideoPreviewScreen extends StatefulWidget{
@@ -20,6 +21,8 @@ class _DisplayCameraVideoPreviewScreenState extends State<DisplayCameraVideoPrev
 
   late VideoPlayerController videoPlayerController;
   late ChewieController chewieController;
+  final _logger = LoggerUtils();
+  final _TAG = "DisplayCameraVideoPreviewScreenState";
 
   Future<void> initialiseVideoPlayer() async{
     print("Video path received ${widget.videoPath}");
@@ -64,6 +67,14 @@ class _DisplayCameraVideoPreviewScreenState extends State<DisplayCameraVideoPrev
         child: Text("Go back"),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _logger.log(TAG: _TAG, message: "Disposing video camera");
+    videoPlayerController.dispose();
+    chewieController.dispose();
+    super.dispose();
   }
 
 }

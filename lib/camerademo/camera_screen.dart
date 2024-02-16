@@ -80,7 +80,7 @@ class _CameraScreenState extends State<CameraScreen>{
     }
   }
 
-  Future<void> shootVideoAndDisplayPreview() async{
+  Future<void> startRecording() async{
     print("Started with video recording");
     await _cameraController?.startVideoRecording();
     _isCameraRecordingOn = true;
@@ -90,13 +90,16 @@ class _CameraScreenState extends State<CameraScreen>{
   }
 
   Future<void> stopVideoRecordingInCamera() async{
-    if(_cameraController!.value.isRecordingVideo){
-      _isCameraRecordingOn = false;
-      XFile? cameraVideo = await _cameraController?.stopVideoRecording();
-      print("Path for video ${cameraVideo?.path}");
-      Navigator.push(context, MaterialPageRoute(builder: (context) => DisplayCameraVideoPreviewScreen(videoPath: cameraVideo?.path ?? "")));
-    }
+    XFile? cameraVideo = await _cameraController?.stopVideoRecording();
+    _isCameraRecordingOn = false;
+    print("Path for video ${cameraVideo?.path}");
+    Navigator.push(context, MaterialPageRoute(builder: (context) => DisplayCameraVideoPreviewScreen(videoPath: cameraVideo?.path ?? ""))).then((value){
+      _logger.log(TAG: _TAG, message: "Video preview completed");
+      setState(() {
 
+      });
+
+    });
   }
 
   @override
@@ -146,9 +149,9 @@ class _CameraScreenState extends State<CameraScreen>{
                     ///Video recording
                     GestureDetector(
                       onTap: (){
-                        _isCameraRecordingOn = !_isCameraRecordingOn;
+
                         if(_isCameraRecordingOn == false){
-                          shootVideoAndDisplayPreview();
+                          startRecording();
                         }
                         else{
                           stopVideoRecordingInCamera();
