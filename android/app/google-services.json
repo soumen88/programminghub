@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "483628015840",
+    "project_id": "programminghub-50563",
+    "storage_bucket": "programminghub-50563.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:483628015840:android:1f5ca470b07f8b18b03085",
+        "android_client_info": {
+          "package_name": "com.programming.hub.programminghub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJV2aJfJovpvTng2bYnHue6_DVaK75PtA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
