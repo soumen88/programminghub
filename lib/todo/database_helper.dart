@@ -48,11 +48,26 @@ class DatabaseHelper{
     }
 
     // open the database
-    _database = await openDatabase(path, readOnly: true);
+    _database = await openDatabase(path);
     return Future.value(true);
   }
 
-  Future<List<TasksModel>?> getSentiments() async{
+
+  Future<void> insertTasks(TasksModel tasksModel) async{
+    //local database variable
+    final curDB = await _database;
+    //insert function
+    await curDB.insert(
+      //first parameter is Table name
+      AppConstants.kAppTable,
+      //second parameter is data to be inserted
+      tasksModel.mapTasks(),
+      //replace if two same entries are inserted
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<TasksModel>?> getTaskList() async{
     try{
       List<TasksModel> tasksList = [];
       var res = await  _database.rawQuery("Select *  from tasks");
@@ -61,7 +76,7 @@ class DatabaseHelper{
         int id = int.parse(rowData["Id"].toString());
         String taskName = rowData["TaskName"].toString();
         TasksModel tasksModel = TasksModel(id: id, taskName: taskName);
-        //_logger.log(TAG: _TAG, message: "Current model $homeSentimentModel");
+        _logger.log(TAG: _TAG, message: "Current model $tasksModel");
         tasksList.add(tasksModel);
       }
       return Future.value(tasksList);
@@ -72,5 +87,33 @@ class DatabaseHelper{
     }
   }
 
+  Future<void> updateTasks(TasksModel tasksModel) async {
+    final curDB = await _database;
+    //update a specific student
+    await curDB.update(
+      //table name
+      AppConstants.kAppTable,
+      //convert tasks object to a map
+      tasksModel.mapTasks(),
+      //ensure that the student has a matching email
+      where: 'Id = ?',
+      //argument of where statement(the email we want to search in our case)
+      whereArgs: [tasksModel.id],
+    );
+  }
 
+  Future<void> deleteTasks(TasksModel tasksModel) async {
+    final curDB = await _database;
+    //update a specific student
+    await curDB.delete(
+      //table name
+      AppConstants.kAppTable,
+      //convert tasks object to a map
+      //tasksModel.mapTasks(),
+      //ensure that the student has a matching email
+      where: 'Id = ?',
+      //argument of where statement(the email we want to search in our case)
+      whereArgs: [tasksModel.id],
+    );
+  }
 }
