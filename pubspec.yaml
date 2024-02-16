@@ -52,6 +52,20 @@ dependencies:
   #Asking permissions in app
   permission_handler: ^11.0.1
 
+  #Play Videos in app
+  video_player: ^2.7.2
+
+  #Display video player buttons
+  chewie: ^1.7.1
+
+  #Using asset database in app
+  sqflite: ^2.0.2+1
+  path_provider: ^2.1.0
+  sqflite_common_ffi: ^2.3.0+2
+
+  #Provider state management
+  provider: ^6.0.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
