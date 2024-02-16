@@ -5,6 +5,8 @@ import 'package:programminghub/base/permission_utils.dart';
 import 'package:programminghub/camerademo/camera_image_preview_screen.dart';
 import 'dart:math' as math;
 
+import 'package:programminghub/camerademo/video_preview_screen.dart';
+
 class CameraScreen extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
@@ -72,6 +74,23 @@ class _CameraScreenState extends State<CameraScreen>{
     Navigator.push(context, MaterialPageRoute(builder: (context) => CameraImagePreviewScreen(imagePath: imagePath)));
   }
 
+  ///Step 4 Recording video
+  Future<void> startRecording() async{
+    _isCameraRecordingOn = true;
+    await _cameraController?.startVideoRecording();
+  }
+
+  Future<void> stopRecording() async{
+    XFile? videoXFile = await _cameraController?.stopVideoRecording();
+    _isCameraRecordingOn = false;
+    _logger.log(TAG: _TAG, message: "Video file path ${videoXFile?.path}");
+    Navigator.push(context, MaterialPageRoute(builder: (context) => VideoPreviewScreen(videoPath: videoXFile?.path ?? '' ))).then((value){
+      setState(() {
+
+      });
+    });
+  }
+
   Future<void> checkPermissions() async{
     bool isAllPermissionsGranted = await _permissionUtils.askCameraPermission();
     if(isAllPermissionsGranted){
@@ -126,7 +145,12 @@ class _CameraScreenState extends State<CameraScreen>{
                     ///Video recording
                     GestureDetector(
                       onTap: (){
-                        _isCameraRecordingOn = !_isCameraRecordingOn;
+                        if(_isCameraRecordingOn == false){
+                          startRecording();
+                        }
+                        else{
+                          stopRecording();
+                        }
                         setState(() {
 
                         });
