@@ -102,7 +102,7 @@ class DatabaseHelper{
     );
   }
 
-  Future<void> deleteTasks(TasksModel tasksModel) async {
+  Future<void> deleteTasks(int taskId) async {
     final curDB = await _database;
     //update a specific student
     await curDB.delete(
@@ -113,7 +113,7 @@ class DatabaseHelper{
       //ensure that the student has a matching email
       where: 'Id = ?',
       //argument of where statement(the email we want to search in our case)
-      whereArgs: [tasksModel.id],
+      whereArgs: [taskId],
     );
   }
 }

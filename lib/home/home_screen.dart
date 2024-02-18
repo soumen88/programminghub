@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:programminghub/bmicalc/bmi_calculator_screen.dart';
+import 'package:programminghub/displayproducts/display_products_screen.dart';
 import 'package:programminghub/pageviews/page_view_demonstration_screen.dart';
 import 'package:programminghub/todo/display_task_screen.dart';
 
 import '../camerademo/camera_screen.dart';
+import '../senddatatoserver/send_data_to_server_screen.dart';
 import '../timer/timer_screen.dart';
 
 
@@ -45,6 +47,18 @@ class HomeScreen extends StatelessWidget{
                   Navigator.push(context, MaterialPageRoute(builder: (context) => DisplayTaskScreen()));
                 },
                 child: Text("Start Todo")
+            ),
+            ElevatedButton(
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => DisplayProductsScreen()));
+                },
+                child: Text("Display Products")
+            ),
+            ElevatedButton(
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SendDataToServerScreen()));
+                },
+                child: Text("Send Data To Server")
             )
           ],
         ),

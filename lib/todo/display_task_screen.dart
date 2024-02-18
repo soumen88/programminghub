@@ -92,7 +92,7 @@ class DisplayTaskScreen extends StatelessWidget{
                   ElevatedButton(
                       onPressed: () async{
                         TasksModel tasksModel = TasksModel(id: 4, taskName: "this is a new task here");
-                        await _dbHelper.deleteTasks(tasksModel);
+                        await _dbHelper.deleteTasks(4);
                       },
                       child: Text("Delete Data")
                   ),
