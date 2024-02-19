@@ -4,10 +4,10 @@ class TasksModel{
 
   TasksModel({required this.taskId, required this.taskDesc});
 
-  Map<String, dynamic> mapTasks(){
+  Map<String, dynamic> taskMapper(){
     return {
-      "Id" : taskId,
-      "TaskDesc" : taskDesc,
+      "Id" : this.taskId,
+      "TaskDesc" : this.taskDesc,
     };
   }
 

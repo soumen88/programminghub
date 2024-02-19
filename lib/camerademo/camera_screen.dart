@@ -1,12 +1,16 @@
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:programminghub/base/logger_utils.dart';
 import 'package:programminghub/base/permission_utils.dart';
 import 'package:programminghub/camerademo/camera_image_preview_screen.dart';
 import 'dart:math' as math;
-
+import '../routing/app_router.dart';
 import 'package:programminghub/camerademo/video_preview_screen.dart';
+import 'package:programminghub/routing/app_router.dart';
 
+@RoutePage()
 class CameraScreen extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
@@ -71,7 +75,7 @@ class _CameraScreenState extends State<CameraScreen>{
     XFile? file = await _cameraController?.takePicture();
     String imagePath = file?.path ?? '';
     _logger.log(TAG: _TAG, message: "Image path $imagePath");
-    Navigator.push(context, MaterialPageRoute(builder: (context) => CameraImagePreviewScreen(imagePath: imagePath)));
+    context.router.navigate(CameraImagePreviewRoute(imagePath: imagePath));
   }
 
   ///Step 4 Recording video
@@ -84,7 +88,7 @@ class _CameraScreenState extends State<CameraScreen>{
     XFile? videoXFile = await _cameraController?.stopVideoRecording();
     _isCameraRecordingOn = false;
     _logger.log(TAG: _TAG, message: "Video file path ${videoXFile?.path}");
-    Navigator.push(context, MaterialPageRoute(builder: (context) => VideoPreviewScreen(videoPath: videoXFile?.path ?? '' ))).then((value){
+    context.router.navigate(VideoPreviewRoute(videoPath: videoXFile?.path ?? '')).then((value){
       setState(() {
 
       });

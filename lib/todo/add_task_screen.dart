@@ -1,8 +1,10 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:programminghub/todo/tasks_model.dart';
 import 'package:programminghub/todo/tasks_notifier.dart';
 import 'package:provider/provider.dart';
 
+@RoutePage()
 class AddTaskScreen extends StatelessWidget{
   GlobalKey<FormState> _formKey = GlobalKey();
   TextEditingController taskController = TextEditingController();

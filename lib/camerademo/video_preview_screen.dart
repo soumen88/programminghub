@@ -1,12 +1,12 @@
-
-
 import 'dart:io';
 
+import 'package:auto_route/annotations.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:programminghub/base/logger_utils.dart';
 import 'package:video_player/video_player.dart';
 
+@RoutePage()
 class VideoPreviewScreen extends StatefulWidget{
   String videoPath;
 

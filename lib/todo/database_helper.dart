@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
@@ -8,79 +9,79 @@ import 'package:programminghub/todo/tasks_model.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper{
-  static final DatabaseHelper instance = DatabaseHelper._init();
-  DatabaseHelper._init();
-  late Database _database;
+
   final _logger = LoggerUtils();
   final _TAG = "DatabaseHelper";
 
-  ///Step 1 - Creating the database
-  Future<bool> createDatabase() async{
-    var databasePath = await getDatabasesPath();
-    var path = join(databasePath, AppConstants.kDatabaseName);
-    var isDbExists = await databaseExists(path);
-    if(!isDbExists){
-      try{
+  static DatabaseHelper _instance = DatabaseHelper._init();
+  static DatabaseHelper get dbInstance => _instance;
+
+  DatabaseHelper._init();
+
+  late Database _database;
+
+  ///Step 1 - DB creation
+  Future<bool> createDBInLocalStorage() async{
+    try{
+      var databasePath = await getDatabasesPath();
+      var path = join(databasePath, AppConstants.kDatabaseName);
+      bool isDbExists = await databaseExists(path);
+      if(!isDbExists){
+        //Copying the DB here
         await Directory(dirname(path)).create(recursive: true);
-      }
-      catch(exception){
-        _logger.log(TAG: _TAG, message: "Exception in creating directory $exception");
-        return Future.error(exception);
+        ByteData dbData = await rootBundle.load(join("assets/database",AppConstants.kDatabaseName));
+        List<int> dbSize = dbData.buffer.asUint8List(dbData.offsetInBytes, dbData.lengthInBytes);
+        await File(path).writeAsBytes(dbSize, flush: true);
       }
 
-      ///Copy the asset database
-      ByteData data = await rootBundle.load(join("assets/databases", AppConstants.kDatabaseName));
-      List<int> bytesSize = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-      //Write the file in internal storage
-      await File(path).writeAsBytes(bytesSize, flush: true);
+      _database = await openDatabase(path);
       return Future.value(true);
     }
-
-    _database = await openDatabase(path);
-    return Future.value(true);
+    catch(exception){
+      return Future.error("DB copy failed $exception");
+    }
   }
 
   ///Step 2 - Getting list of tasks
-  Future<List<TasksModel>> getTasksList() async{
+  Future<List<TasksModel>> getTaskList() async{
     try{
-      List<TasksModel> taskList = [];
-      var query = "Select * from ToDoListTable";
+      List<TasksModel> pendingTasksList = [];
+      String query = "Select * from ${AppConstants.kDatabaseTableName}";
       var queryResult = await _database.rawQuery(query);
-      for(var result in queryResult){
-        int id = int.parse(result["Id"].toString());
-        String taskDesc = result["TaskDesc"].toString();
-        TasksModel tasksModel = TasksModel(taskId: id, taskDesc: taskDesc);
-        taskList.add(tasksModel);
+      for(var currentRow in queryResult){
+        int taskId = int.parse(currentRow["Id"].toString());
+        String taskDesc = currentRow["TaskDesc"].toString();
+        TasksModel tasksModel = TasksModel(taskId: taskId, taskDesc: taskDesc);
+        pendingTasksList.add(tasksModel);
       }
-      _logger.log(TAG: _TAG, message: "Task list $taskList");
-      return Future.value(taskList);
+      return Future.value(pendingTasksList);
     }
     catch(exception){
-      _logger.log(TAG: _TAG, message: "Exception $exception");
-      return Future.error("Failed to get task list");
+      return Future.error("Get tasks failed $exception");
     }
   }
 
-  ///Step 3 - Insert tasks
-  Future<void> insertTask(TasksModel tasksModel) async{
-    await _database.insert(
+  ///Step 3 - Inserting tasks
+  Future<int> insertTask(TasksModel taskModel) async{
+    int rowId = await _database.insert(
         AppConstants.kDatabaseTableName,
-        tasksModel.mapTasks(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
+        taskModel.taskMapper(),
+        conflictAlgorithm: ConflictAlgorithm.replace
     );
+    return Future.value(rowId);
   }
 
-  ///Step 4 - Update tasks
+  ///Step 4 - Updating tasks
   Future<void> updateTask(TasksModel tasksModel) async{
     await _database.update(
-      AppConstants.kDatabaseTableName,
-      tasksModel.mapTasks(),
-      where: "Id = ?",
-      whereArgs: [tasksModel.taskId]
+        AppConstants.kDatabaseTableName,
+        tasksModel.taskMapper(),
+        where: "Id = ?",
+        whereArgs: [tasksModel.taskId]
     );
   }
 
-  ///Step 5 - Delete tasks
+  ///Step 5 - Delete the tasks
   Future<void> deleteTask(int taskId) async{
     await _database.delete(
         AppConstants.kDatabaseTableName,

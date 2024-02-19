@@ -1,6 +1,8 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:programminghub/bmicalc/bmi_calc_input_field.dart';
 
+@RoutePage()
 class BmiCalculatorScreen extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
