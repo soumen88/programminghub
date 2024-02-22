@@ -4,11 +4,13 @@ import 'package:auto_route/auto_route.dart';
 import '../bmicalc/bmi_calculator_screen.dart';
 import '../bottomsheetnavigation/bottom_sheet_screen.dart';
 import '../bottomsheetnavigation/first/first_page.dart';
+import '../bottomsheetnavigation/first/product_desc_screen.dart';
 import '../bottomsheetnavigation/second/second_page.dart';
 import '../camerademo/camera_image_preview_screen.dart';
 import '../camerademo/camera_screen.dart';
 import '../camerademo/video_preview_screen.dart';
 import '../home/home_screen.dart';
+import '../models/shopping_products_model.dart';
 import '../pageviews/page_view_demonstration_screen.dart';
 import '../timer/timer_screen.dart';
 import '../todo/add_task_screen.dart';
@@ -70,6 +72,10 @@ class AppRouter extends _$AppRouter{
               path: "second"
           ),
         ]
+    ),
+    AutoRoute(
+        page: ProductDescRoute.page,
+        path: "/productDesc"
     ),
   ];
 }

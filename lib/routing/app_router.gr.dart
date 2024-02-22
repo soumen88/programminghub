@@ -75,6 +75,13 @@ abstract class _$AppRouter extends RootStackRouter {
         child: PageViewDemonstrationScreen(),
       );
     },
+    ProductDescRoute.name: (routeData) {
+      final args = routeData.argsAs<ProductDescRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: ProductDescScreen(selectedProductData: args.selectedProductData),
+      );
+    },
     SecondRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -261,6 +268,35 @@ class RouteViewDemonstrationRoute extends PageRouteInfo<void> {
   static const String name = 'RouteViewDemonstrationRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ProductDescScreen]
+class ProductDescRoute extends PageRouteInfo<ProductDescRouteArgs> {
+  ProductDescRoute({
+    required ShoppingProductsModel selectedProductData,
+    List<PageRouteInfo>? children,
+  }) : super(
+          ProductDescRoute.name,
+          args: ProductDescRouteArgs(selectedProductData: selectedProductData),
+          initialChildren: children,
+        );
+
+  static const String name = 'ProductDescRoute';
+
+  static const PageInfo<ProductDescRouteArgs> page =
+      PageInfo<ProductDescRouteArgs>(name);
+}
+
+class ProductDescRouteArgs {
+  const ProductDescRouteArgs({required this.selectedProductData});
+
+  final ShoppingProductsModel selectedProductData;
+
+  @override
+  String toString() {
+    return 'ProductDescRouteArgs{selectedProductData: $selectedProductData}';
+  }
 }
 
 /// generated route for

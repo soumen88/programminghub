@@ -15,6 +15,8 @@ _$ShoppingProductsModelImpl _$$ShoppingProductsModelImplFromJson(
       productDescription: json['description'] as String,
       category: json['category'] as String,
       imageUrl: json['image'] as String,
+      productRatingsModel:
+          ProductRatingsModel.fromJson(json['rating'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$ShoppingProductsModelImplToJson(
@@ -26,4 +28,5 @@ Map<String, dynamic> _$$ShoppingProductsModelImplToJson(
       'description': instance.productDescription,
       'category': instance.category,
       'image': instance.imageUrl,
+      'rating': instance.productRatingsModel.toJson(),
     };

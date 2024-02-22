@@ -30,6 +30,9 @@ mixin _$ShoppingProductsModel {
   String get category => throw _privateConstructorUsedError;
   @JsonKey(name: "image")
   String get imageUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: "rating")
+  ProductRatingsModel get productRatingsModel =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -49,7 +52,10 @@ abstract class $ShoppingProductsModelCopyWith<$Res> {
       num price,
       @JsonKey(name: "description") String productDescription,
       String category,
-      @JsonKey(name: "image") String imageUrl});
+      @JsonKey(name: "image") String imageUrl,
+      @JsonKey(name: "rating") ProductRatingsModel productRatingsModel});
+
+  $ProductRatingsModelCopyWith<$Res> get productRatingsModel;
 }
 
 /// @nodoc
@@ -72,6 +78,7 @@ class _$ShoppingProductsModelCopyWithImpl<$Res,
     Object? productDescription = null,
     Object? category = null,
     Object? imageUrl = null,
+    Object? productRatingsModel = null,
   }) {
     return _then(_value.copyWith(
       productId: null == productId
@@ -98,7 +105,20 @@ class _$ShoppingProductsModelCopyWithImpl<$Res,
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
               as String,
+      productRatingsModel: null == productRatingsModel
+          ? _value.productRatingsModel
+          : productRatingsModel // ignore: cast_nullable_to_non_nullable
+              as ProductRatingsModel,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ProductRatingsModelCopyWith<$Res> get productRatingsModel {
+    return $ProductRatingsModelCopyWith<$Res>(_value.productRatingsModel,
+        (value) {
+      return _then(_value.copyWith(productRatingsModel: value) as $Val);
+    });
   }
 }
 
@@ -117,7 +137,11 @@ abstract class _$$ShoppingProductsModelImplCopyWith<$Res>
       num price,
       @JsonKey(name: "description") String productDescription,
       String category,
-      @JsonKey(name: "image") String imageUrl});
+      @JsonKey(name: "image") String imageUrl,
+      @JsonKey(name: "rating") ProductRatingsModel productRatingsModel});
+
+  @override
+  $ProductRatingsModelCopyWith<$Res> get productRatingsModel;
 }
 
 /// @nodoc
@@ -138,6 +162,7 @@ class __$$ShoppingProductsModelImplCopyWithImpl<$Res>
     Object? productDescription = null,
     Object? category = null,
     Object? imageUrl = null,
+    Object? productRatingsModel = null,
   }) {
     return _then(_$ShoppingProductsModelImpl(
       productId: null == productId
@@ -164,6 +189,10 @@ class __$$ShoppingProductsModelImplCopyWithImpl<$Res>
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
               as String,
+      productRatingsModel: null == productRatingsModel
+          ? _value.productRatingsModel
+          : productRatingsModel // ignore: cast_nullable_to_non_nullable
+              as ProductRatingsModel,
     ));
   }
 }
@@ -178,7 +207,8 @@ class _$ShoppingProductsModelImpl implements _ShoppingProductsModel {
       required this.price,
       @JsonKey(name: "description") required this.productDescription,
       required this.category,
-      @JsonKey(name: "image") required this.imageUrl});
+      @JsonKey(name: "image") required this.imageUrl,
+      @JsonKey(name: "rating") required this.productRatingsModel});
 
   factory _$ShoppingProductsModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ShoppingProductsModelImplFromJson(json);
@@ -198,10 +228,13 @@ class _$ShoppingProductsModelImpl implements _ShoppingProductsModel {
   @override
   @JsonKey(name: "image")
   final String imageUrl;
+  @override
+  @JsonKey(name: "rating")
+  final ProductRatingsModel productRatingsModel;
 
   @override
   String toString() {
-    return 'ShoppingProductsModel(productId: $productId, title: $title, price: $price, productDescription: $productDescription, category: $category, imageUrl: $imageUrl)';
+    return 'ShoppingProductsModel(productId: $productId, title: $title, price: $price, productDescription: $productDescription, category: $category, imageUrl: $imageUrl, productRatingsModel: $productRatingsModel)';
   }
 
   @override
@@ -218,13 +251,15 @@ class _$ShoppingProductsModelImpl implements _ShoppingProductsModel {
             (identical(other.category, category) ||
                 other.category == category) &&
             (identical(other.imageUrl, imageUrl) ||
-                other.imageUrl == imageUrl));
+                other.imageUrl == imageUrl) &&
+            (identical(other.productRatingsModel, productRatingsModel) ||
+                other.productRatingsModel == productRatingsModel));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, productId, title, price,
-      productDescription, category, imageUrl);
+      productDescription, category, imageUrl, productRatingsModel);
 
   @JsonKey(ignore: true)
   @override
@@ -248,8 +283,10 @@ abstract class _ShoppingProductsModel implements ShoppingProductsModel {
       required final num price,
       @JsonKey(name: "description") required final String productDescription,
       required final String category,
-      @JsonKey(name: "image")
-      required final String imageUrl}) = _$ShoppingProductsModelImpl;
+      @JsonKey(name: "image") required final String imageUrl,
+      @JsonKey(name: "rating")
+      required final ProductRatingsModel
+          productRatingsModel}) = _$ShoppingProductsModelImpl;
 
   factory _ShoppingProductsModel.fromJson(Map<String, dynamic> json) =
       _$ShoppingProductsModelImpl.fromJson;
@@ -269,6 +306,9 @@ abstract class _ShoppingProductsModel implements ShoppingProductsModel {
   @override
   @JsonKey(name: "image")
   String get imageUrl;
+  @override
+  @JsonKey(name: "rating")
+  ProductRatingsModel get productRatingsModel;
   @override
   @JsonKey(ignore: true)
   _$$ShoppingProductsModelImplCopyWith<_$ShoppingProductsModelImpl>
